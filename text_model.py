@@ -5,10 +5,25 @@ def separate_text(text):
 	Returns all words in a string as a list of words
 	input: text, a string
 	"""
-	tokenized_list = re.findall(r"[\w']+|[;:()]", text)
+	tokenized_list = re.findall(r"[\S]+|[;:()]", text)
 	return [words for words in tokenized_list if words not in ";:()[]{}"]
 
-def markov_triple(words):
+def start_marks(text_list):
+	"""
+	Returns text list, with a "beginning sentence marker" between the start and end
+	of a sentence (which will be $ in this case)
+	"""
+	text = ["$", "$"] + text_list
+	mark_text = []
+	for i in range(len(text_list)):
+		mark_text.append(text[i])
+		if i + 1 != len(text_list) and text[i][-1] in ".!?":
+			mark_text.append("$")
+			mark_text.append("$")
+
+	return mark_text
+
+def make_triple(words):
 	""" 
 	Returns every word in a list as a triple with the next two words 
 	succeeding it
@@ -31,7 +46,7 @@ def form_tuple(word_triples):
 	"""
 	return [((w1, w2), w3) for (w1, w2, w3) in word_triples]
 
-def get_freq(triples):
+def get_freq(text):
 	"""
 	Returns every key value pair with a value of 1 to count one of each
 	pair (to prepare for reducing/aggregating)
@@ -39,6 +54,9 @@ def get_freq(triples):
 		   words, and the value is the word that succeeds the pair 
 	"""
 
+	cleaned_text = start_marks(separate_text(text))
+	print(cleaned_text)
+	triples = form_tuple(make_triple(cleaned_text))
 	trip_freq = {} #final list of all the frequencies
 
 	for k, v in triples:
@@ -51,15 +69,3 @@ def get_freq(triples):
 				trip_freq[k][v] += 1
 
 	return trip_freq
- 
-
-text = "Hello everyone!! My name is Adriana and I love to code so much it\
-		is just so damn swell and also I love cake"
-
-triples = markov_triple(separate_text(text))
-triple_to_tuple = form_tuple(triples)
-freq = get_freq(triple_to_tuple)
-print(freq)
-
-
-		
