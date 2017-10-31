@@ -5,8 +5,8 @@ def separate_text(text):
 	Returns all words in a string as a list of words
 	input: text, a string
 	"""
-	tokenized_list = re.findall(r"[\w']+|[.?!;:()]", text)
-	return [words for words in tokenized_list if words not in ".!?;:()[]{}"]
+	tokenized_list = re.findall(r"[\w']+|[;:()]", text)
+	return [words for words in tokenized_list if words not in ";:()[]{}"]
 
 def markov_triple(words):
 	""" 
@@ -38,20 +38,28 @@ def get_freq(triples):
 	input: triples, a list of key-value pairs where the key is a pair of
 		   words, and the value is the word that succeeds the pair 
 	"""
-	#return [(k, v, 1) for (k, v) in triples]
-	freq = {}
-	
 
-#def aggregate_sum(freq):
-	#return 
+	trip_freq = {} #final list of all the frequencies
+
+	for k, v in triples:
+		if k not in trip_freq:
+			trip_freq[k] = {v: 1}
+		else:
+			if v not in trip_freq[k]:
+				trip_freq[k][v] = 1
+			else:
+				trip_freq[k][v] += 1
+
+	return trip_freq
+ 
 
 text = "Hello everyone!! My name is Adriana and I love to code so much it\
 		is just so damn swell and also I love cake"
 
-triple_text = form_tuple(markov_triple(separate_text(text)))
-pair_count = get_freq(triple_text)
-
-print(pair_count)
+triples = markov_triple(separate_text(text))
+triple_to_tuple = form_tuple(triples)
+freq = get_freq(triple_to_tuple)
+print(freq)
 
 
 		
