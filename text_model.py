@@ -55,7 +55,6 @@ def get_freq(text):
 	"""
 
 	cleaned_text = start_marks(separate_text(text))
-	print(cleaned_text)
 	triples = form_tuple(make_triple(cleaned_text))
 	trip_freq = {} #final list of all the frequencies
 
