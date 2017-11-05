@@ -3,7 +3,7 @@ import numpy as np
 
 def weighted_values(freq_dict):
 	"""
-	Helper function: finds probability of each key
+	Finds probability of each key and returns the probability of each word in a dictionary
 	"""
 	prob_dict = {}
 	for d in freq_dict.keys():
@@ -15,7 +15,7 @@ def weighted_values(freq_dict):
 
 def random_key(freq_dict, pair_key):
 	"""
-	Helper function: picks random key based on weights of key
+	Picks random key based on weights of key and returns that key
 	"""
 	dict_word = []
 	dict_freq = []
@@ -24,7 +24,6 @@ def random_key(freq_dict, pair_key):
 		dict_freq.append(freq)
 	dict_freq = np.array(dict_freq)
 	dict_freq = dict_freq/dict_freq.sum()
-	#np.divide(dict_freq, dict_freq.sum(), out=dict_freq)
 	return np.random.choice(dict_word, 1, p=dict_freq)[0]
 
 class MarkovModel:
