@@ -75,3 +75,4 @@ class MarkovModel:
 			n += len(word)
 		markov = [w for w in markov if w != "$"]
 		return ' '.join(markov)
+		
